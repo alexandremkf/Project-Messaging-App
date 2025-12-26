@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api";
+const API_URL = "https://messaging-app-backend-xu0q.onrender.com/api";
 let token = localStorage.getItem("token");
 let currentChatUserId = null;
 let messagesInterval = null;
