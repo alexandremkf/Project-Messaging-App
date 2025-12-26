@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "backend/src/server.js",
   "scripts": {
-    "dev": "nodemon backend/src/server.js"
+    "dev": "nodemon backend/src/server.js",
+    "start": "node backend/src/server.js",
+    "postinstall": "prisma generate"
   },
   "repository": {
     "type": "git",
