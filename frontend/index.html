@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Messaging App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- LOGIN / REGISTER -->
+  <section id="auth-section">
+    <h2>Login</h2>
+
+    <input id="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Senha" />
+    <button onclick="login()">Login</button>
+
+    <h3>Ou registre-se</h3>
+
+    <input id="username-register" placeholder="Username" />
+    <input id="email-register" placeholder="Email" />
+    <input id="password-register" type="password" placeholder="Senha" />
+    <button onclick="register()">Registrar</button>
+  </section>
+
+  <!-- USUÁRIOS -->
+  <section id="users-section" style="display:none;">
+    <h2>Usuários</h2>
+    <button onclick="logout()">Logout</button>
+    <ul id="users-list"></ul>
+  </section>
+
+  <!-- CHAT -->
+  <section id="chat-section" style="display:none;">
+    <h2 id="chat-with"></h2>
+    <div id="messages"></div>
+
+    <input id="message-input" placeholder="Digite uma mensagem..." />
+    <button onclick="sendMessage()">Enviar</button>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>
