@@ -1,29 +1,153 @@
+:root {
+  --bg-main: #36393f;
+  --bg-sidebar: #2f3136;
+  --bg-chat: #40444b;
+  --bg-input: #40444b;
+  --text-main: #dcddde;
+  --text-muted: #b9bbbe;
+  --accent: #5865f2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  height: 100vh;
 }
 
-section {
-  margin-bottom: 30px;
+/* ---------- AUTH ---------- */
+
+.auth-container {
+  max-width: 300px;
+  margin: 80px auto;
+  background: var(--bg-sidebar);
+  padding: 20px;
+  border-radius: 6px;
 }
 
-#messages {
-  border: 1px solid #ccc;
-  height: 200px;
-  overflow-y: auto;
+.auth-container input,
+.auth-container button {
+  width: 100%;
   margin-bottom: 10px;
-  padding: 5px;
+  padding: 8px;
+}
+
+.auth-container button {
+  background: var(--accent);
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* ---------- APP LAYOUT ---------- */
+
+#app {
+  display: flex;
+  height: 100vh;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+.sidebar {
+  width: 240px;
+  background: var(--bg-sidebar);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+#users-list {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
 }
 
 #users-list li {
+  padding: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  padding: 5px;
+  color: var(--text-muted);
 }
 
 #users-list li:hover {
-  background-color: #f0f0f0;
+  background: var(--bg-chat);
+  color: white;
 }
 
-#messages div {
-  margin: 4px 0;
+.logout-btn {
+  background: none;
+  border: none;
+  color: #f04747;
+  cursor: pointer;
+}
+
+/* ---------- CHAT ---------- */
+
+.chat-area {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-main);
+}
+
+.chat-header {
+  padding: 10px;
+  background: var(--bg-chat);
+  border-bottom: 1px solid #202225;
+}
+
+.messages {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.message {
+  max-width: 60%;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  background: var(--bg-chat);
+}
+
+.message.me {
+  margin-left: auto;
+  background: var(--accent);
+  color: white;
+}
+
+/* ---------- INPUT ---------- */
+
+.message-input {
+  display: flex;
+  padding: 10px;
+  background: var(--bg-chat);
+}
+
+.message-input input {
+  flex-grow: 1;
+  padding: 8px;
+  background: var(--bg-input);
+  border: none;
+  color: white;
+  border-radius: 4px;
+}
+
+.message-input button {
+  margin-left: 8px;
+  background: var(--accent);
+  border: none;
+  padding: 8px 12px;
+  color: white;
+  cursor: pointer;
 }

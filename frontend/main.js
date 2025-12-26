@@ -20,11 +20,7 @@ async function register() {
     body: JSON.stringify({ username, email, password }),
   });
 
-  if (res.ok) {
-    alert("Usuário registrado com sucesso!");
-  } else {
-    alert("Erro ao registrar");
-  }
+  alert(res.ok ? "Usuário registrado!" : "Erro ao registrar");
 }
 
 async function login() {
@@ -52,44 +48,31 @@ function logout() {
   localStorage.removeItem("token");
   token = null;
 
-  if (messagesInterval) {
-    clearInterval(messagesInterval);
-    messagesInterval = null;
-  }
+  if (messagesInterval) clearInterval(messagesInterval);
 
   document.getElementById("auth-section").style.display = "block";
-  document.getElementById("users-section").style.display = "none";
-  document.getElementById("chat-section").style.display = "none";
+  document.getElementById("app").style.display = "none";
 }
 
-async function validateToken() {
-  try {
-    const res = await fetch(`${API_URL}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+/* ---------- TOKEN ---------- */
 
-    if (res.ok) {
-      showUsers();
-    } else {
-      logout();
-    }
-  } catch {
-    logout();
-  }
+async function validateToken() {
+  const res = await fetch(`${API_URL}/users/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  res.ok ? showUsers() : logout();
 }
 
 function parseJwt(token) {
-  const base64 = token.split(".")[1];
-  return JSON.parse(atob(base64));
+  return JSON.parse(atob(token.split(".")[1]));
 }
 
 /* ---------- USERS ---------- */
 
 async function showUsers() {
   document.getElementById("auth-section").style.display = "none";
-  document.getElementById("users-section").style.display = "block";
+  document.getElementById("app").style.display = "flex";
 
   const res = await fetch(`${API_URL}/users`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -109,17 +92,13 @@ async function showUsers() {
 
 /* ---------- CHAT ---------- */
 
-async function openChat(userId, username) {
+function openChat(userId, username) {
   currentChatUserId = userId;
-  document.getElementById("chat-section").style.display = "block";
-  document.getElementById("chat-with").textContent = `Chat com ${username}`;
+  document.getElementById("chat-with").textContent = username;
 
   loadMessages();
 
-  if (messagesInterval) {
-    clearInterval(messagesInterval);
-  }
-
+  if (messagesInterval) clearInterval(messagesInterval);
   messagesInterval = setInterval(loadMessages, 3000);
 }
 
@@ -132,17 +111,17 @@ async function loadMessages() {
   const container = document.getElementById("messages");
   container.innerHTML = "";
 
+  const myId = parseJwt(token).userId;
+
   messages.forEach(msg => {
     const div = document.createElement("div");
-    div.textContent = msg.content;
+    div.classList.add("message");
 
-    if (msg.senderId === undefined) return;
-
-    if (msg.senderId === parseJwt(token).userId) {
-        div.style.textAlign = "right";
-        div.style.fontWeight = "bold";
+    if (msg.senderId === myId) {
+      div.classList.add("me");
     }
 
+    div.textContent = msg.content;
     container.appendChild(div);
   });
 
@@ -151,14 +130,7 @@ async function loadMessages() {
 
 async function sendMessage() {
   const input = document.getElementById("message-input");
-  const content = input.value;
-
-  if (!content) return;
-
-  if (!currentChatUserId) {
-    alert("Selecione um usuário para conversar");
-    return;
-  }
+  if (!input.value || !currentChatUserId) return;
 
   await fetch(`${API_URL}/messages`, {
     method: "POST",
@@ -167,7 +139,7 @@ async function sendMessage() {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      content,
+      content: input.value,
       receiverId: currentChatUserId,
     }),
   });

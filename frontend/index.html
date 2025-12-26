@@ -8,7 +8,7 @@
 <body>
 
   <!-- LOGIN / REGISTER -->
-  <section id="auth-section">
+  <section id="auth-section" class="auth-container">
     <h2>Login</h2>
 
     <input id="email" placeholder="Email" />
@@ -23,21 +23,31 @@
     <button onclick="register()">Registrar</button>
   </section>
 
-  <!-- USUÁRIOS -->
-  <section id="users-section" style="display:none;">
-    <h2>Usuários</h2>
-    <button onclick="logout()">Logout</button>
-    <ul id="users-list"></ul>
-  </section>
+  <!-- APP -->
+  <div id="app" style="display:none;">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <h2>Usuários</h2>
+      <ul id="users-list"></ul>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </aside>
 
-  <!-- CHAT -->
-  <section id="chat-section" style="display:none;">
-    <h2 id="chat-with"></h2>
-    <div id="messages"></div>
+    <!-- CHAT -->
+    <main class="chat-area">
+      <header class="chat-header">
+        <span id="chat-with">Selecione um usuário</span>
+      </header>
 
-    <input id="message-input" placeholder="Digite uma mensagem..." />
-    <button onclick="sendMessage()">Enviar</button>
-  </section>
+      <div id="messages" class="messages"></div>
+
+      <div class="message-input">
+        <input id="message-input" placeholder="Digite uma mensagem..." />
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </main>
+
+  </div>
 
   <script src="main.js"></script>
 </body>
