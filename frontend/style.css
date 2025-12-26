@@ -14,3 +14,16 @@ section {
   margin-bottom: 10px;
   padding: 5px;
 }
+
+#users-list li {
+  cursor: pointer;
+  padding: 5px;
+}
+
+#users-list li:hover {
+  background-color: #f0f0f0;
+}
+
+#messages div {
+  margin: 4px 0;
+}

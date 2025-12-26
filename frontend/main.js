@@ -1,6 +1,7 @@
 const API_URL = "http://localhost:3000/api";
 let token = localStorage.getItem("token");
 let currentChatUserId = null;
+let messagesInterval = null;
 
 if (token) {
   validateToken();
@@ -51,6 +52,11 @@ function logout() {
   localStorage.removeItem("token");
   token = null;
 
+  if (messagesInterval) {
+    clearInterval(messagesInterval);
+    messagesInterval = null;
+  }
+
   document.getElementById("auth-section").style.display = "block";
   document.getElementById("users-section").style.display = "none";
   document.getElementById("chat-section").style.display = "none";
@@ -72,6 +78,11 @@ async function validateToken() {
   } catch {
     logout();
   }
+}
+
+function parseJwt(token) {
+  const base64 = token.split(".")[1];
+  return JSON.parse(atob(base64));
 }
 
 /* ---------- USERS ---------- */
@@ -102,7 +113,14 @@ async function openChat(userId, username) {
   currentChatUserId = userId;
   document.getElementById("chat-section").style.display = "block";
   document.getElementById("chat-with").textContent = `Chat com ${username}`;
+
   loadMessages();
+
+  if (messagesInterval) {
+    clearInterval(messagesInterval);
+  }
+
+  messagesInterval = setInterval(loadMessages, 3000);
 }
 
 async function loadMessages() {
@@ -117,8 +135,18 @@ async function loadMessages() {
   messages.forEach(msg => {
     const div = document.createElement("div");
     div.textContent = msg.content;
+
+    if (msg.senderId === undefined) return;
+
+    if (msg.senderId === parseJwt(token).userId) {
+        div.style.textAlign = "right";
+        div.style.fontWeight = "bold";
+    }
+
     container.appendChild(div);
   });
+
+  container.scrollTop = container.scrollHeight;
 }
 
 async function sendMessage() {
@@ -126,6 +154,11 @@ async function sendMessage() {
   const content = input.value;
 
   if (!content) return;
+
+  if (!currentChatUserId) {
+    alert("Selecione um usuário para conversar");
+    return;
+  }
 
   await fetch(`${API_URL}/messages`, {
     method: "POST",
